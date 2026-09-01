@@ -1,0 +1,2779 @@
+{
+  "name": "FlujoPrincipal",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6b5e3ed0-3b6b-4f5c-8e39-1a7e2df1d001",
+              "leftValue": "={{ $('Telegram Trigger1').first().json.callback_query.data }}",
+              "rightValue": "cart:confirm",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        4192,
+        1296
+      ],
+      "id": "e81e4671-7a29-4f89-9867-368140457166",
+      "name": "Es confirmar carrito1"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 569084784,
+          "mode": "list",
+          "cachedResultName": "Sesiones",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit#gid=569084784"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telegram_id": "={{ $('Telegram Trigger1').first().json.callback_query.message.chat.id }}",
+            "carrito_temporal": "[]"
+          },
+          "matchingColumns": [
+            "telegram_id"
+          ],
+          "schema": [
+            {
+              "id": "telegram_id",
+              "displayName": "telegram_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pantalla_actual",
+              "displayName": "pantalla_actual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "carrito_temporal",
+              "displayName": "carrito_temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_cambio",
+              "displayName": "ultimo_cambio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4416,
+        1312
+      ],
+      "id": "b3701a97-9f14-4b89-afa6-e60fe63cd093",
+      "name": "Vaciar carrito1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: $('Telegram Trigger1').first().json.callback_query.message.chat.id, text: \"\\ud83d\\uddd1\\ufe0f Tu carrito ha sido vaciado.\", parse_mode: \"Markdown\", reply_markup: { inline_keyboard: [ [ { text: \"\\ud83c\\udf7d\\ufe0f Ver menu\", callback_data: \"mostrarMenu\" } ] ] } } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4640,
+        1312
+      ],
+      "id": "67fcdc9f-d91d-4227-bf08-dff4a06c023f",
+      "name": "Confirmar carrito eliminado1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 995842303,
+          "mode": "list",
+          "cachedResultName": "Usuarios",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit#gid=995842303"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "telegram_id",
+              "lookupValue": "={{ $('Generar pedido').first().json.id_usuario }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5424,
+        1712
+      ],
+      "id": "a70e9785-2ea1-4740-897b-2117e78103ea",
+      "name": "Leer usuario para puntos1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const total = Number($('Generar pedido').first().json.total_pago || 0);\nconst usuario = $json;\nconst puntosActuales = Number(usuario.puntos || 0);\nconst PESOS_POR_PUNTO = 10000;\nconst puntosGanados = Math.floor(total / PESOS_POR_PUNTO);\nconst puntosTotales = puntosActuales + puntosGanados;\nreturn [{ json: {\n  id_usuario: $('Generar pedido').first().json.id_usuario,\n  puntosGanados,\n  puntosTotales\n} }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5648,
+        1712
+      ],
+      "id": "62e6c101-362c-4150-8cdd-1e5f14c7797f",
+      "name": "Calcular puntos1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b1c2a3e4-1111-4a2b-9c3d-a0f1e2d3c403",
+              "leftValue": "={{ $json.puntosGanados }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        5872,
+        1712
+      ],
+      "id": "28000083-2af3-417e-b1ec-b85e5e58f885",
+      "name": "Gano puntos1"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 995842303,
+          "mode": "list",
+          "cachedResultName": "Usuarios",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit#gid=995842303"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telegram_id": "={{ $json.id_usuario }}",
+            "puntos": "={{ $json.puntosTotales }}"
+          },
+          "matchingColumns": [
+            "telegram_id"
+          ],
+          "schema": [
+            {
+              "id": "telegram_id",
+              "displayName": "telegram_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "puntos",
+              "displayName": "puntos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        6096,
+        1632
+      ],
+      "id": "3b702b87-e0d9-4bea-83aa-be7e94bee17a",
+      "name": "Actualizar puntos1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: $('Telegram Trigger1').first().json.callback_query.message.chat.id, text: \"\\u2b50 Ganaste \" + $('Calcular puntos1').first().json.puntosGanados + \" punto(s) de lealtad.\\n\\ud83c\\udfc6 Total acumulado: \" + $('Calcular puntos1').first().json.puntosTotales + \" punto(s).\" } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6320,
+        1632
+      ],
+      "id": "bba34259-0d04-45ef-b967-7813b23da00c",
+      "name": "Notificar puntos usuario1"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "callback_query"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        2304,
+        1760
+      ],
+      "id": "891b4892-15c2-46cf-b7b2-f81effbb77f3",
+      "name": "Telegram Trigger1",
+      "webhookId": "33ff122a-8866-4a06-adaf-14dd8c4838b0",
+      "credentials": {
+        "telegramApi": {
+          "id": "W7q8ProMzeGqkFVv",
+          "name": "DeliveryBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger1').first().json.message.chat.id }}",
+        "text": "=¡Hola, {{ $('Telegram Trigger1').first().json.message.from.first_name }}! 👋 \n\nSoy DeliveryBot, tu asistente de pedidos de la cafetería. \n\nConmigo puedes: \n• 🍽️ Consultar el menú \n• 🛒 Confirmar pedidos \n• 📦 Ver el estado de tu pedido \n• 📋 Consultar tu historial de pedidos  \n\n¿Qué deseas hacer?",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Menu",
+                    "additionalFields": {
+                      "callback_data": "mostrarMenu"
+                    }
+                  },
+                  {
+                    "text": "Pedidos",
+                    "additionalFields": {
+                      "callback_data": "mostrarPedido"
+                    }
+                  },
+                  {
+                    "text": "Historial",
+                    "additionalFields": {
+                      "callback_data": "mostrarHistorial"
+                    }
+                  },
+                  {
+                    "text": "Comfirmar",
+                    "additionalFields": {
+                      "callback_data": "confirmarPedido"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3760,
+        1824
+      ],
+      "id": "142c32bd-7b93-4b24-8ef7-6aea8340bed3",
+      "name": "Send a text message1",
+      "webhookId": "708dd451-2bd5-45df-8410-ec1e96b08e5e",
+      "credentials": {
+        "telegramApi": {
+          "id": "W7q8ProMzeGqkFVv",
+          "name": "DeliveryBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Telegram Trigger1').first().json.message.text }}",
+        "options": {
+          "systemMessage": "Eres el asistente de DeliveryBot, un sistema de pedidos de cafetería mediante Telegram.\n\n## TU FUNCIÓN\n\nSolo debes identificar la intención del usuario y devolver UNA de estas respuestas:\n\n* INICIO → Si saluda, inicia una conversación o pregunta qué puede hacer el bot.\n* CONSULTA → Si hace una pregunta general sobre DeliveryBot que no pertenece a un flujo activo.\n* SILENCIO → Si el usuario está realizando una acción que otro workflow de n8n debe procesar.\n\n## USA SILENCIO PARA\n\n* Seleccionar categorías.\n* Seleccionar productos.\n* Indicar cantidades.\n* Agregar productos.\n* Eliminar productos.\n* Modificar el carrito.\n* Consultar o confirmar el carrito.\n* Confirmar un pedido.\n* Cancelar un pedido dentro del flujo.\n* Interactuar con botones inline.\n* Responder a opciones mostradas por otro workflow.\n* Cualquier acción relacionada con un flujo activo de pedidos.\n\n## REGLAS\n\n1. Devuelve únicamente INICIO, CONSULTA o SILENCIO.\n2. No escribas explicaciones.\n3. No respondas directamente al usuario.\n4. No inventes información.\n5. No calcules precios ni totales.\n6. No crees ni modifiques pedidos.\n7. No gestiones el carrito ni el stock.\n8. Los workflows de n8n tienen prioridad sobre ti.\n9. Si existe duda entre CONSULTA y SILENCIO, usa SILENCIO.\n\n## EJEMPLOS\n\n\"Hola\" → INICIO\n\n\"Buenos días\" → INICIO\n\n\"¿Qué puedes hacer?\" → INICIO\n\n\"¿Cómo funciona DeliveryBot?\" → CONSULTA\n\n\"¿Cómo hago un pedido?\" → CONSULTA\n\n\"Quiero ver el menú\" → CONSULTA\n\n\"2\" → SILENCIO\n\n\"Quiero 3\" → SILENCIO\n\n\"Agregar\" → SILENCIO\n\n\"Caldo de pollo\" → SILENCIO\n\n\"Confirmar\" → SILENCIO\n\n\"Eliminar la hamburguesa\" → SILENCIO\n\n\"Muéstrame mi carrito\" → SILENCIO\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        3184,
+        1840
+      ],
+      "id": "9078d480-4737-474d-8c03-14a17f13f545",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        3056,
+        2048
+      ],
+      "id": "e9075269-9bc3-4bd0-b0bb-c2783a5c9309",
+      "name": "Ollama Chat Model1",
+      "credentials": {
+        "ollamaApi": {
+          "id": "mf94Njq3lCM4cHXG",
+          "name": "Unnamed credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "aa025084-9f05-4c05-b6f2-6210a480c903",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "INICIO",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3520,
+        1840
+      ],
+      "id": "5d05b564-3d77-4226-8dc5-f1d8379a7d3d",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "09f68712-4615-47dd-bf43-56557cf173ee",
+              "leftValue": "={{ $('Telegram Trigger1').first().json.callback_query }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2976,
+        1760
+      ],
+      "id": "a4dffb2a-1c47-46de-be5f-c69b0f0c7682",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Telegram Trigger1').first().json.callback_query.data }}",
+                    "rightValue": "mostrarMenu",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "0b478df5-c788-4c89-99b1-2e5c5240429c"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "4e1a4777-3de3-4fc1-b74d-1861bbd1b720",
+                    "leftValue": "={{ $('Telegram Trigger1').first().json.callback_query.data }}",
+                    "rightValue": "mostrarPedido",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "9255f0ea-2155-475a-a4a3-77879995a711",
+                    "leftValue": "={{ $('Telegram Trigger1').first().json.callback_query.data }}",
+                    "rightValue": "mostrarHistorial",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "8c11740b-6725-4443-bda1-40e36782e4f8",
+                    "leftValue": "={{ $('Telegram Trigger1').first().json.callback_query.data }}",
+                    "rightValue": "confirmarPedido",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e8794bd4-a887-42a7-805a-92820b24d3fe",
+                    "leftValue": "={{ $('Telegram Trigger1').first().json.callback_query.data }}",
+                    "rightValue": "bebidas",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "03779fcd-b70c-4ff1-8e80-1eb92b8ac6ac",
+                    "leftValue": "={{ $('Telegram Trigger1').first().json.callback_query.data }}",
+                    "rightValue": "snacks",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e7e72214-d062-4347-8cf2-f7d4b15a11b5",
+                    "leftValue": "={{ $('Telegram Trigger1').first().json.callback_query.data }}",
+                    "rightValue": "comidas",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        3136,
+        208
+      ],
+      "id": "c78e4130-c74c-4172-a40b-18d7f007be04",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "sendRichMessage",
+        "chatId": "={{ $('Telegram Trigger1').first().json.callback_query.message.chat.id }}",
+        "richFormat": "markdown",
+        "richMessageText": "📋 Menú Digital\n\nEl menú estará organizado por categorías para facilitar la consulta de los productos:\n\n🥤 Bebidas\n🍔 Comidas\n🍿 Snacks",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Bebidas",
+                    "additionalFields": {
+                      "callback_data": "bebidas"
+                    }
+                  },
+                  {
+                    "text": "Comidas",
+                    "additionalFields": {
+                      "callback_data": "comidas"
+                    }
+                  },
+                  {
+                    "text": "Snacks",
+                    "additionalFields": {
+                      "callback_data": "snacks"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3392,
+        192
+      ],
+      "id": "e4964a80-f8ec-487b-b0d1-8f49ad35921f",
+      "name": "Send a rich message1",
+      "webhookId": "3f6ac24d-f48a-4dcf-b93a-c7984c50820b",
+      "credentials": {
+        "telegramApi": {
+          "id": "W7q8ProMzeGqkFVv",
+          "name": "DeliveryBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3376,
+        384
+      ],
+      "id": "da12fe3e-46cc-458e-9d9b-47af151d8192",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Menu",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "categoria",
+              "lookupValue": "={{ $('Telegram Trigger1').first().json.callback_query.data }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3600,
+        400
+      ],
+      "id": "755902ce-6796-4fc8-9722-a7f846caedc4",
+      "name": "Get row(s) in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 995842303,
+          "mode": "list",
+          "cachedResultName": "Usuarios",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit#gid=995842303"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "telegram_id",
+              "lookupValue": "={{ $json.message?.chat?.id || $json.callback_query?.message?.chat?.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2528,
+        1760
+      ],
+      "id": "7320980e-bfa5-498d-8420-2ee626d885c7",
+      "name": "Get row(s) in sheet3",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a751bb7c-75ee-45ad-a3ad-125e9116aa84",
+              "leftValue": "={{ $json.telegram_id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2752,
+        1760
+      ],
+      "id": "e0345121-d217-4805-93ab-b1eab6e1017b",
+      "name": "If5"
+    },
+    {
+      "parameters": {
+        "operation": "sendRichMessage",
+        "chatId": "={{ $('Telegram Trigger1').first().json.message.chat.id }}",
+        "richFormat": "markdown",
+        "richMessageText": "👋 <b>¡Hola!</b>\n\nPara poder utilizar <b>DeliveryBot</b> y realizar pedidos en la cafetería, primero debes registrarte.\n\n📝 Haz clic en el botón de abajo para completar tu registro.\n\n<b>El registro solo te tomará unos minutos.</b>\n\n👇 Cuando estés listo, pulsa <b>Registrarme</b>.",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Registrarme",
+                    "additionalFields": {
+                      "url": "=https://tavern-knapsack-hungrily.ngrok-free.dev/form/d767df41-8c7c-4d76-8152-58bf25a18489?telegramId={{ $('Telegram Trigger1').first().json.message.chat.id }}"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2880,
+        2160
+      ],
+      "id": "62a1b7f1-a9a7-44ec-9791-967e1ab45ddd",
+      "name": "Send a rich message3",
+      "webhookId": "fe28737d-ea3b-4769-a076-1c703ded52f4",
+      "credentials": {
+        "telegramApi": {
+          "id": "W7q8ProMzeGqkFVv",
+          "name": "DeliveryBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const productos = $input.all();\nconst disponibles = productos.filter(item => Number(item.json.stock || 0) > 0);\n\nconst inline_keyboard = disponibles.map(item => {\n  const p = item.json;\n  return [{\n    text: `${p.nombre} - $${Number(p.precio).toLocaleString(\"es-CO\")}`,\n    callback_data: `prod:${p.id_producto}`\n  }];\n});\n\nreturn [{\n  json: {\n    mensaje: disponibles.length ? \"Elige un producto:\" : \"⚠️ No hay disponibles.\",\n    inline_keyboard\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3824,
+        400
+      ],
+      "id": "c46275e5-3188-451b-9986-1e7ed3628ebd",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot8887651799:AAGNCYHmith86r-FN7x34SwC5K4ID_xhW50/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  chat_id: $('Telegram Trigger1').first().json.callback_query.message.chat.id,\n  text: $json.mensaje,\n  parse_mode: \"Markdown\",\n  reply_markup: { inline_keyboard: $json.inline_keyboard }\n} }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        4048,
+        400
+      ],
+      "id": "56f14d11-a667-4603-a3a0-326b05f1886b",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "834b87f3-c1b3-47a1-b2e5-76db2e5845f0",
+                    "leftValue": "={{ $('Telegram Trigger1').first().json.callback_query.data.split(':')[0] }}",
+                    "rightValue": "prod",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "2d19b980-787d-47bc-8480-5de659f62d8d",
+                    "leftValue": "={{ $('Telegram Trigger1').first().json.callback_query.data.split(':')[0] }}",
+                    "rightValue": "qty",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "1befa687-ac57-4043-883a-32e2c371a07d",
+                    "leftValue": "={{ $('Telegram Trigger1').first().json.callback_query.data.split(':')[0] }}",
+                    "rightValue": "cart",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "d12d3334-c71a-415c-8d71-4ed086294ea2",
+                    "leftValue": "={{ $('Telegram Trigger1').first().json.callback_query.data.split(':')[0] }}",
+                    "rightValue": "estado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        4032,
+        1136
+      ],
+      "id": "53f1890b-72c3-4742-8147-a56ea96f8368",
+      "name": "Router de acciones"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Menu",
+          "mode": "name",
+          "cachedResultName": "Menu"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "id_producto",
+              "lookupValue": "={{ $('Telegram Trigger1').first().json.callback_query.data.split(':')[1] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4304,
+        896
+      ],
+      "id": "241bffa1-3693-42b7-a93d-cf28a5cfbc56",
+      "name": "Buscar producto",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const producto = $json;\nconst cantidad = 1;\nconst mensaje = `\\ud83d\\uded2 *${producto.nombre}*\\n\\ud83d\\udcb2 $${Number(producto.precio).toLocaleString(\"es-CO\")}\\n\\ud83d\\udce6 Stock disponible: ${producto.stock}\\n\\nCantidad: *${cantidad}*`;\nconst inline_keyboard = [\n  [\n    { text: \"\\u2796\", callback_data: `qty:${producto.id_producto}:${cantidad}:dec` },\n    { text: `${cantidad}`, callback_data: `qty:${producto.id_producto}:${cantidad}:noop` },\n    { text: \"\\u2795\", callback_data: `qty:${producto.id_producto}:${cantidad}:inc` }\n  ],\n  [\n    { text: \"\\ud83d\\uded2 Agregar al carrito\", callback_data: `qty:${producto.id_producto}:${cantidad}:add` }\n  ]\n];\nreturn [{ json: { mensaje, inline_keyboard } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4528,
+        896
+      ],
+      "id": "de2d8016-a2c3-4405-b615-2d68bd78fad8",
+      "name": "Armar pantalla cantidad"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: $('Telegram Trigger1').first().json.callback_query.message.chat.id, text: $json.mensaje, parse_mode: \"Markdown\", reply_markup: { inline_keyboard: $json.inline_keyboard } } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4752,
+        896
+      ],
+      "id": "8a3a6bb6-d1be-4cde-8823-0a5a89bc980f",
+      "name": "Enviar pantalla cantidad"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $('Telegram Trigger1').first().json.callback_query.data;\nconst [, id_producto, cantidadActual, accion] = data.split(\":\");\nlet cantidad = Number(cantidadActual);\nif (accion === \"inc\") cantidad = cantidad + 1;\nif (accion === \"dec\") cantidad = Math.max(1, cantidad - 1);\nreturn [{ json: { id_producto, cantidad, accion } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4304,
+        1136
+      ],
+      "id": "21b40a9a-50b9-4312-9ed7-5b91ee4c4f48",
+      "name": "Parsear callback cantidad"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Menu",
+          "mode": "name",
+          "cachedResultName": "Menu"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "id_producto",
+              "lookupValue": "={{ $json.id_producto }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4528,
+        1136
+      ],
+      "id": "8cdd22e0-446b-4705-adac-2dab32e08f02",
+      "name": "Buscar producto para cantidad",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "37bbded0-707e-4efa-86a0-61d58cbd4a80",
+              "leftValue": "={{ $('Parsear callback cantidad').first().json.accion }}",
+              "rightValue": "add",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        4752,
+        1136
+      ],
+      "id": "3a229899-a400-41e2-8382-4457d9c2066a",
+      "name": "Es agregar al carrito"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 569084784,
+          "mode": "list",
+          "cachedResultName": "Sesiones",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit#gid=569084784"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "telegram_id",
+              "lookupValue": "={{ $('Telegram Trigger1').first().json.callback_query.message.chat.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4976,
+        992
+      ],
+      "id": "4c71d816-e301-4bb6-8710-cd494aae82c9",
+      "name": "Leer sesion",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const producto = $('Buscar producto para cantidad').first().json;\nconst cantidad = $('Parsear callback cantidad').first().json.cantidad;\nconst sesion = $json;\nlet carrito = [];\ntry { carrito = JSON.parse(sesion.carrito_temporal || \"[]\"); } catch (e) { carrito = []; }\nconst existente = carrito.find(i => i.id_producto === producto.id_producto);\nif (existente) { existente.cantidad += cantidad; }\nelse { carrito.push({ id_producto: producto.id_producto, nombre: producto.nombre, precio: Number(producto.precio), cantidad }); }\nlet total = 0;\nlet resumen = \"\\ud83d\\uded2 *Tu carrito:*\\n\\n\";\nfor (const item of carrito) {\n  const subtotal = item.precio * item.cantidad;\n  total += subtotal;\n  resumen += `\\u2022 ${item.nombre} x${item.cantidad} \\u2014 $${subtotal.toLocaleString(\"es-CO\")}\\n`;\n}\nresumen += `\\n*Total: $${total.toLocaleString(\"es-CO\")}*`;\nreturn [{ json: { carrito_json: JSON.stringify(carrito), mensaje: resumen } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5184,
+        992
+      ],
+      "id": "89fa1742-9603-4e4a-8414-54282df627eb",
+      "name": "Actualizar carrito"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 569084784,
+          "mode": "list",
+          "cachedResultName": "Sesiones",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit#gid=569084784"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telegram_id": "={{ $('Telegram Trigger1').first().json.callback_query.from.id }}",
+            "pantalla_actual": "carrito",
+            "carrito_temporal": "={{ $json.carrito_json }}",
+            "ultimo_cambio": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [
+            "telegram_id"
+          ],
+          "schema": [
+            {
+              "id": "telegram_id",
+              "displayName": "telegram_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pantalla_actual",
+              "displayName": "pantalla_actual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "carrito_temporal",
+              "displayName": "carrito_temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_cambio",
+              "displayName": "ultimo_cambio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5408,
+        992
+      ],
+      "id": "c73e7ea3-961a-4acf-bd9c-203b954c8f7d",
+      "name": "Guardar sesion",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: $('Telegram Trigger1').first().json.callback_query.message.chat.id, text: $('Actualizar carrito').first().json.mensaje, parse_mode: \"Markdown\", reply_markup: { inline_keyboard: [ [ { text: \"\\u2795 Agregar otro producto\", callback_data: \"mostrarMenu\" } ], [ { text: \"\\u2705 Confirmar pedido\", callback_data: \"cart:confirm\" } ], [ { text: \"\\ud83d\\uddd1\\ufe0f Eliminar carrito\", callback_data: \"cart:delete\" } ] ] } } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5632,
+        992
+      ],
+      "id": "e86f7181-911e-41ce-8bd2-9a8cbcbf97b0",
+      "name": "Enviar resumen carrito"
+    },
+    {
+      "parameters": {
+        "jsCode": "const producto = $('Buscar producto para cantidad').first().json;\nconst cantidad = $('Parsear callback cantidad').first().json.cantidad;\nconst mensaje = `\\ud83d\\uded2 *${producto.nombre}*\\n\\ud83d\\udcb2 $${Number(producto.precio).toLocaleString(\"es-CO\")}\\n\\ud83d\\udce6 Stock disponible: ${producto.stock}\\n\\nCantidad: *${cantidad}*`;\nconst inline_keyboard = [\n  [\n    { text: \"\\u2796\", callback_data: `qty:${producto.id_producto}:${cantidad}:dec` },\n    { text: `${cantidad}`, callback_data: `qty:${producto.id_producto}:${cantidad}:noop` },\n    { text: \"\\u2795\", callback_data: `qty:${producto.id_producto}:${cantidad}:inc` }\n  ],\n  [\n    { text: \"\\ud83d\\uded2 Agregar al carrito\", callback_data: `qty:${producto.id_producto}:${cantidad}:add` }\n  ]\n];\nreturn [{ json: { mensaje, inline_keyboard } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4976,
+        1264
+      ],
+      "id": "d3a4a730-90a5-462b-b362-bfcd6b019753",
+      "name": "Armar edicion cantidad"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/editMessageText",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: $('Telegram Trigger1').first().json.callback_query.message.chat.id, message_id: $('Telegram Trigger1').first().json.callback_query.message.message_id, text: $json.mensaje, parse_mode: \"Markdown\", reply_markup: { inline_keyboard: $json.inline_keyboard } } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5168,
+        1200
+      ],
+      "id": "0aac3f88-da93-4601-8c5e-d6ee22c7f2e1",
+      "name": "Editar pantalla cantidad"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 569084784,
+          "mode": "list",
+          "cachedResultName": "Sesiones",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit#gid=569084784"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "telegram_id",
+              "lookupValue": "={{ $('Telegram Trigger1').first().json.callback_query.message.chat.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4288,
+        1472
+      ],
+      "id": "bdc4d0dd-8efb-4b95-8a2c-57ddd1ecc361",
+      "name": "Leer carrito para confirmar",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Menu",
+          "mode": "name",
+          "cachedResultName": "Menu"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4528,
+        1472
+      ],
+      "id": "cb7f71ab-7ab6-4ac8-8ff3-efcf1d9352ab",
+      "name": "Obtener menu completo",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const sesion = $('Leer carrito para confirmar').first().json;\nconst menu = $input.all().map(i => i.json);\nlet carrito = [];\ntry { carrito = JSON.parse(sesion.carrito_temporal || \"[]\"); } catch (e) { carrito = []; }\n\nif (carrito.length === 0) {\n  return [{ json: { valido: false, carritoVacio: true, total: 0, items: [], problemas: \"\" } }];\n}\n\nlet total = 0;\nlet problemas = [];\nconst items = [];\n\nfor (const item of carrito) {\n  const productoMenu = menu.find(p => p.id_producto === item.id_producto);\n  const stockDisponible = productoMenu ? Number(productoMenu.stock) : 0;\n  if (!productoMenu || stockDisponible < item.cantidad) {\n    problemas.push(`${item.nombre} (disponible: ${stockDisponible}, pedido: ${item.cantidad})`);\n    continue;\n  }\n  total += item.precio * item.cantidad;\n  items.push({ id_producto: item.id_producto, nombre: item.nombre, cantidad: item.cantidad, precio: item.precio, stockRestante: stockDisponible - item.cantidad });\n}\n\nreturn [{ json: { valido: problemas.length === 0 && items.length > 0, carritoVacio: false, total, items, problemas: problemas.join(\", \") } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4752,
+        1472
+      ],
+      "id": "e7e2be7a-9e89-4e76-ae35-656f2257b7d7",
+      "name": "Validar stock y calcular total"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "df8721d1-1bba-4e72-aa4c-66ddf8b85a2c",
+              "leftValue": "={{ $json.valido }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        4976,
+        1472
+      ],
+      "id": "ffa95d8c-7fec-46e2-885d-a785d78006ed",
+      "name": "Stock suficiente"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: $('Telegram Trigger1').first().json.callback_query.message.chat.id, text: $json.carritoVacio ? \"\\ud83d\\uded2 Tu carrito est\\u00e1 vac\\u00edo. Usa el men\\u00fa para agregar productos antes de confirmar.\" : \"\\u26a0\\ufe0f No hay stock suficiente para: \" + $json.problemas } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5184,
+        1584
+      ],
+      "id": "3a0f3602-8037-4b99-8569-aab5074dbb03",
+      "name": "Avisar falta de stock"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $json;\nconst fecha = new Date();\nconst id_pedido = \"PED-\" + fecha.getTime();\nreturn [{ json: {\n  id_pedido,\n  id_usuario: $('Telegram Trigger1').first().json.callback_query.message.chat.id,\n  detalles_pedido: JSON.stringify(data.items),\n  total_pago: data.total,\n  estado: \"Recibido\",\n  fecha: fecha.toISOString().split(\"T\")[0],\n  hora: fecha.toTimeString().split(\" \")[0],\n  items: data.items\n} }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5184,
+        1344
+      ],
+      "id": "3d04c779-36a3-468f-b2ca-000ef2671f04",
+      "name": "Generar pedido"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 227148562,
+          "mode": "list",
+          "cachedResultName": "Pedidos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit#gid=227148562"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_pedido": "={{ $json.id_pedido }}",
+            "id_usuario": "={{ $json.id_usuario }}",
+            "detalles_pedido ": "={{ $json.detalles_pedido }}",
+            "total_pago": "={{ $json.total_pago }}",
+            "estado": "={{ $json.estado }}",
+            "fecha": "={{ $json.fecha }}",
+            "hora": "={{ $json.hora }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "id_pedido",
+              "displayName": "id_pedido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id_usuario",
+              "displayName": "id_usuario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "detalles_pedido ",
+              "displayName": "detalles_pedido ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "total_pago",
+              "displayName": "total_pago",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fecha",
+              "displayName": "fecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "hora",
+              "displayName": "hora",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5408,
+        1296
+      ],
+      "id": "7972ce5c-ddc6-43b3-9d94-3f7ecbd026fa",
+      "name": "Guardar pedido",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "items",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        5408,
+        1488
+      ],
+      "id": "c2a629bf-300b-4dcc-bbe2-432b5a150874",
+      "name": "Separar items del carrito"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Menu",
+          "mode": "name",
+          "cachedResultName": "Menu"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": [
+            "id_producto"
+          ],
+          "value": {
+            "id_producto": "={{ $json.id_producto }}",
+            "stock": "={{ $json.stockRestante }}"
+          },
+          "schema": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5632,
+        1488
+      ],
+      "id": "b61abc19-3cff-4b67-b466-30562b0c3951",
+      "name": "Descontar stock",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 569084784,
+          "mode": "list",
+          "cachedResultName": "Sesiones",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit#gid=569084784"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telegram_id": "={{ $json.id_usuario }}",
+            "pantalla_actual": "",
+            "carrito_temporal": "[]"
+          },
+          "matchingColumns": [
+            "telegram_id"
+          ],
+          "schema": [
+            {
+              "id": "telegram_id",
+              "displayName": "telegram_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pantalla_actual",
+              "displayName": "pantalla_actual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "carrito_temporal",
+              "displayName": "carrito_temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_cambio",
+              "displayName": "ultimo_cambio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5632,
+        1296
+      ],
+      "id": "cf6680b5-fcf0-4e0e-b08a-089d02469932",
+      "name": "Limpiar carrito",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: $env.KITCHEN_CHAT_ID, text: \"\\ud83d\\udd14 Nuevo pedido \" + $('Generar pedido').first().json.id_pedido + \"\\nTotal: $\" + $('Generar pedido').first().json.total_pago, reply_markup: { inline_keyboard: [ [ { text: \"\\ud83d\\udc68\\u200d\\ud83c\\udf73 Preparaci\\u00f3n\", callback_data: \"estado:\" + $('Generar pedido').first().json.id_pedido + \":prep\" }, { text: \"\\ud83d\\udef5 En camino\", callback_data: \"estado:\" + $('Generar pedido').first().json.id_pedido + \":camino\" } ], [ { text: \"\\u2705 Entregado\", callback_data: \"estado:\" + $('Generar pedido').first().json.id_pedido + \":entregado\" } ] ] } } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5856,
+        1184
+      ],
+      "id": "7e921f09-aeb6-449c-845d-73844ac1fe45",
+      "name": "Notificar cocina"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: $('Telegram Trigger1').first().json.callback_query.message.chat.id, text: \"\\u2705 Pedido confirmado: \" + $('Generar pedido').first().json.id_pedido + \"\\n\\ud83d\\udcb0 Total: $\" + $('Generar pedido').first().json.total_pago + \"\\n\\ud83d\\udce6 Estado: Recibido\" } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5856,
+        1344
+      ],
+      "id": "6096ff0b-40ff-4a50-b8fc-3512280d1fb6",
+      "name": "Confirmar pedido usuario"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Pedidos",
+          "mode": "name",
+          "cachedResultName": "Pedidos"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "id_usuario",
+              "lookupValue": "={{ $('Telegram Trigger1').first().json.callback_query.message.chat.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3392,
+        608
+      ],
+      "id": "e6eb2f8d-a432-4252-8150-ca6192a06266",
+      "name": "Buscar pedidos del usuario1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const pedidos = $input.all().map(i => i.json);\nconst activos = pedidos.filter(p => p.estado && p.estado !== \"Entregado\");\nlet mensaje;\nif (activos.length === 0) {\n  mensaje = \"\\ud83d\\udce6 No tienes pedidos activos en este momento.\";\n} else {\n  const pedido = activos[activos.length - 1];\n  const emojis = { \"Recibido\": \"\\ud83c\\udd95\", \"Preparacion\": \"\\ud83d\\udc68\\u200d\\ud83c\\udf73\", \"Preparaci\\u00f3n\": \"\\ud83d\\udc68\\u200d\\ud83c\\udf73\", \"En camino\": \"\\ud83d\\udef5\", \"Entregado\": \"\\u2705\" };\n  const emoji = emojis[pedido.estado] || \"\\ud83d\\udce6\";\n  mensaje = `${emoji} *Pedido ${pedido.id_pedido}*\\n\\nEstado: *${pedido.estado}*\\n\\ud83d\\udcb0 Total: $${Number(pedido.total_pago).toLocaleString(\"es-CO\")}\\n\\ud83d\\udcc5 ${pedido.fecha} ${pedido.hora}`;\n}\nreturn [{ json: { mensaje } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3616,
+        608
+      ],
+      "id": "6b9c38f3-4230-4f94-9364-468566922d9d",
+      "name": "Determinar pedido activo1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: $('Telegram Trigger1').first().json.callback_query.message.chat.id, text: $json.mensaje, parse_mode: \"Markdown\" } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3840,
+        608
+      ],
+      "id": "d7de50de-4b59-4433-ab9c-799b95f8cea7",
+      "name": "Enviar estado pedido1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Pedidos",
+          "mode": "name",
+          "cachedResultName": "Pedidos"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "id_usuario",
+              "lookupValue": "={{ $('Telegram Trigger1').first().json.callback_query.message.chat.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3392,
+        832
+      ],
+      "id": "827bbce8-8898-4962-bd4c-03b62e50fd66",
+      "name": "Buscar historial pedidos1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const pedidos = $input.all().map(i => i.json);\nlet mensaje;\nif (pedidos.length === 0) {\n  mensaje = \"\\ud83d\\udccb A\\u00fan no tienes pedidos en tu historial.\";\n} else {\n  const ordenados = [...pedidos].sort((a, b) => {\n    const fa = new Date(`${a.fecha}T${a.hora}`);\n    const fb = new Date(`${b.fecha}T${b.hora}`);\n    return fb - fa;\n  }).slice(0, 5);\n  mensaje = \"\\ud83d\\udccb *Tus \\u00faltimos pedidos:*\\n\\n\";\n  for (const p of ordenados) {\n    mensaje += `\\u2022 ${p.id_pedido} \\u2014 $${Number(p.total_pago).toLocaleString(\"es-CO\")} \\u2014 ${p.estado} (${p.fecha})\\n`;\n  }\n}\nreturn [{ json: { mensaje } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3616,
+        832
+      ],
+      "id": "210a883f-91a0-4c46-ae84-1a622e3da296",
+      "name": "Armar historial1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: $('Telegram Trigger1').first().json.callback_query.message.chat.id, text: $json.mensaje, parse_mode: \"Markdown\" } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3840,
+        832
+      ],
+      "id": "d687daef-dd0b-4098-b325-b0c26971978e",
+      "name": "Enviar historial1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $('Telegram Trigger1').first().json.callback_query.data;\nconst [, id_pedido, codigo] = data.split(\":\");\nconst mapa = { prep: \"Preparaci\\u00f3n\", camino: \"En camino\", entregado: \"Entregado\" };\nconst estado = mapa[codigo] || codigo;\nreturn [{ json: { id_pedido, estado } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4512,
+        1808
+      ],
+      "id": "0a196951-def5-473b-99de-6092f7e27e85",
+      "name": "Parsear cambio estado1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Pedidos",
+          "mode": "name",
+          "cachedResultName": "Pedidos"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "id_pedido",
+              "lookupValue": "={{ $json.id_pedido }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4736,
+        1808
+      ],
+      "id": "c5e8a48e-672f-45a4-bfb8-0946a6875465",
+      "name": "Buscar pedido por id1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Pedidos",
+          "mode": "name",
+          "cachedResultName": "Pedidos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": [
+            "id_pedido"
+          ],
+          "value": {
+            "id_pedido": "={{ $('Parsear cambio estado1').first().json.id_pedido }}",
+            "estado": "={{ $('Parsear cambio estado1').first().json.estado }}"
+          },
+          "schema": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        4960,
+        1808
+      ],
+      "id": "ad794b4b-3f22-45b3-b288-03e6a22a406e",
+      "name": "Actualizar estado pedido1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: $('Buscar pedido por id1').first().json.id_usuario, text: (() => { const mapa = {\"Recibido\":\"\\ud83c\\udd95\",\"Preparaci\\u00f3n\":\"\\ud83d\\udc68\\u200d\\ud83c\\udf73\",\"En camino\":\"\\ud83d\\udef5\",\"Entregado\":\"\\u2705\"}; const e = $('Parsear cambio estado1').first().json.estado; return (mapa[e] || \"\\ud83d\\udce6\") + \" Tu pedido \" + $('Parsear cambio estado1').first().json.id_pedido + \" cambi\\u00f3 de estado: *\" + e + \"*\"; })(), parse_mode: \"Markdown\" } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5184,
+        1728
+      ],
+      "id": "42ecd657-c639-4fb5-b8b4-74dfbf5cf993",
+      "name": "Notificar cambio estado usuario1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: $env.KITCHEN_CHAT_ID, text: \"\\u2705 Pedido \" + $('Parsear cambio estado1').first().json.id_pedido + \" actualizado a: \" + $('Parsear cambio estado1').first().json.estado } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5184,
+        1888
+      ],
+      "id": "fb4e68cc-5c4e-4dae-8002-66a5e6841d22",
+      "name": "Confirmar cambio a cocina1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "492cf877-02aa-4d77-8ea9-b672e4463488",
+              "leftValue": "={{ $('Telegram Trigger1').first().json.callback_query.from.id.toString() }}",
+              "rightValue": "={{ $env.KITCHEN_CHAT_ID }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        4288,
+        1808
+      ],
+      "id": "439a89ca-d52a-4fe7-bc73-24830d9e3332",
+      "name": "Es admin1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: $('Telegram Trigger1').first().json.callback_query.from.id, text: \"\\ud83d\\udeab No tienes permiso para cambiar el estado de los pedidos.\" } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4512,
+        2016
+      ],
+      "id": "ee05993a-e101-4e79-87ca-29607246ec09",
+      "name": "Rechazar cambio no autorizado1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Es confirmar carrito1": {
+      "main": [
+        [
+          {
+            "node": "Leer carrito para confirmar",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Vaciar carrito1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vaciar carrito1": {
+      "main": [
+        [
+          {
+            "node": "Confirmar carrito eliminado1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer usuario para puntos1": {
+      "main": [
+        [
+          {
+            "node": "Calcular puntos1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular puntos1": {
+      "main": [
+        [
+          {
+            "node": "Gano puntos1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gano puntos1": {
+      "main": [
+        [
+          {
+            "node": "Actualizar puntos1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar puntos1": {
+      "main": [
+        [
+          {
+            "node": "Notificar puntos usuario1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Send a rich message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar pedidos del usuario1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Buscar historial pedidos1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Leer carrito para confirmar",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 2
+          }
+        ],
+        [
+          {
+            "node": "Router de acciones",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet2": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet3": {
+      "main": [
+        [
+          {
+            "node": "If5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If5": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a rich message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Router de acciones": {
+      "main": [
+        [
+          {
+            "node": "Buscar producto",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Parsear callback cantidad",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Es confirmar carrito1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Es admin1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar producto": {
+      "main": [
+        [
+          {
+            "node": "Armar pantalla cantidad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar pantalla cantidad": {
+      "main": [
+        [
+          {
+            "node": "Enviar pantalla cantidad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsear callback cantidad": {
+      "main": [
+        [
+          {
+            "node": "Buscar producto para cantidad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar producto para cantidad": {
+      "main": [
+        [
+          {
+            "node": "Es agregar al carrito",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Es agregar al carrito": {
+      "main": [
+        [
+          {
+            "node": "Leer sesion",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Armar edicion cantidad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer sesion": {
+      "main": [
+        [
+          {
+            "node": "Actualizar carrito",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar carrito": {
+      "main": [
+        [
+          {
+            "node": "Guardar sesion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar sesion": {
+      "main": [
+        [
+          {
+            "node": "Enviar resumen carrito",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar edicion cantidad": {
+      "main": [
+        [
+          {
+            "node": "Editar pantalla cantidad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer carrito para confirmar": {
+      "main": [
+        [
+          {
+            "node": "Obtener menu completo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener menu completo": {
+      "main": [
+        [
+          {
+            "node": "Validar stock y calcular total",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar stock y calcular total": {
+      "main": [
+        [
+          {
+            "node": "Stock suficiente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Stock suficiente": {
+      "main": [
+        [
+          {
+            "node": "Generar pedido",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Avisar falta de stock",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar pedido": {
+      "main": [
+        [
+          {
+            "node": "Guardar pedido",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Separar items del carrito",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Leer usuario para puntos1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar pedido": {
+      "main": [
+        [
+          {
+            "node": "Limpiar carrito",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Separar items del carrito": {
+      "main": [
+        [
+          {
+            "node": "Descontar stock",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpiar carrito": {
+      "main": [
+        [
+          {
+            "node": "Notificar cocina",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Confirmar pedido usuario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar pedidos del usuario1": {
+      "main": [
+        [
+          {
+            "node": "Determinar pedido activo1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Determinar pedido activo1": {
+      "main": [
+        [
+          {
+            "node": "Enviar estado pedido1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar historial pedidos1": {
+      "main": [
+        [
+          {
+            "node": "Armar historial1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar historial1": {
+      "main": [
+        [
+          {
+            "node": "Enviar historial1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsear cambio estado1": {
+      "main": [
+        [
+          {
+            "node": "Buscar pedido por id1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar pedido por id1": {
+      "main": [
+        [
+          {
+            "node": "Actualizar estado pedido1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar estado pedido1": {
+      "main": [
+        [
+          {
+            "node": "Notificar cambio estado usuario1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Confirmar cambio a cocina1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Es admin1": {
+      "main": [
+        [
+          {
+            "node": "Parsear cambio estado1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rechazar cambio no autorizado1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "35f41755-1fa7-4662-a185-38dd7d2222a5",
+  "meta": {
+    "instanceId": "96b8e41cfccc3a575c84215226b10039afa9393379a3c0a15f4a3429ae14ea13"
+  },
+  "nodeGroups": [],
+  "id": "MGHWEaDXy3X9XvAu",
+  "tags": []
+}

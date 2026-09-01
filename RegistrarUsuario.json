@@ -1,0 +1,154 @@
+{
+  "name": "RegistrarUsuario",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Formulario DeliveryBot",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Nombre Completo",
+              "placeholder": "Juan Cardenas",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Dirección",
+              "placeholder": "Calle 8a #3n-40",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "respondWithOptions": {
+            "values": {
+              "respondWith": "redirect",
+              "redirectUrl": "https://t.me/Delivery19Bot"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "61853d31-674a-4e75-a26f-fffbd4b25802",
+      "name": "On form submission",
+      "webhookId": "d767df41-8c7c-4d76-8152-58bf25a18489"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 995842303,
+          "mode": "list",
+          "cachedResultName": "Usuarios",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit#gid=995842303"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nombre_completo": "={{ $json['Nombre Completo'] }}",
+            "departamento": "={{ $json['Dirección'] }}",
+            "puntos_lealtad": "0",
+            "telegram_id": "={{ $json.formQueryParameters.telegramId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telegram_id",
+              "displayName": "telegram_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nombre_completo",
+              "displayName": "nombre_completo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "departamento",
+              "displayName": "departamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "puntos_lealtad",
+              "displayName": "puntos_lealtad",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "cb0860ce-78e4-4bdc-8eb8-b801bba80adc",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "20173747-1ff7-4ce9-9808-638f45639b09",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "96b8e41cfccc3a575c84215226b10039afa9393379a3c0a15f4a3429ae14ea13"
+  },
+  "nodeGroups": [],
+  "id": "zOFTbZkX31S2GKjn",
+  "tags": []
+}

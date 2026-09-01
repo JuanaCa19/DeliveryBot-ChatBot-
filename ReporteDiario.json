@@ -1,0 +1,146 @@
+{
+  "name": "ReporteDiario",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 20 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        48,
+        -48
+      ],
+      "id": "ba696d76-90a4-4f8e-b6fe-1c1f2a23af89",
+      "name": "Reporte diario (20:00)1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA",
+          "mode": "list",
+          "cachedResultName": "DeliveryBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HguSP81xQ3Y8EV88Ad7M5M38wuac8EUKwcnwzykqRbA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Pedidos",
+          "mode": "name",
+          "cachedResultName": "Pedidos"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "fecha",
+              "lookupValue": "={{ $now.toFormat('yyyy-MM-dd') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        320,
+        -48
+      ],
+      "id": "da02e76c-583d-436c-9440-9b0b8294c145",
+      "name": "Obtener pedidos del dia1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OGBkhaZPiPmJIA88",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const pedidos = $input.all().map(i => i.json);\n\nlet totalVendido = 0;\nconst conteoProductos = {};\nconst conteoHoras = {};\n\nfor (const p of pedidos) {\n  totalVendido += Number(p.total_pago || 0);\n\n  let items = [];\n  try { items = JSON.parse(p.detalles_pedido || \"[]\"); } catch (e) { items = []; }\n  for (const it of items) {\n    conteoProductos[it.nombre] = (conteoProductos[it.nombre] || 0) + Number(it.cantidad || 0);\n  }\n\n  if (p.hora) {\n    const hora = String(p.hora).split(\":\")[0];\n    conteoHoras[hora] = (conteoHoras[hora] || 0) + 1;\n  }\n}\n\nlet productoEstrella = \"N/A\";\nlet maxCant = 0;\nfor (const [nombre, cant] of Object.entries(conteoProductos)) {\n  if (cant > maxCant) { maxCant = cant; productoEstrella = nombre; }\n}\n\nlet horaPico = \"N/A\";\nlet maxPedidos = 0;\nfor (const [hora, cant] of Object.entries(conteoHoras)) {\n  if (cant > maxPedidos) { maxPedidos = cant; horaPico = `${hora}:00`; }\n}\n\nconst mensaje = `\\ud83d\\udcca *Reporte diario DeliveryBot*\\n\\n\\ud83d\\udcb0 Total vendido: $${totalVendido.toLocaleString(\"es-CO\")}\\n\\ud83d\\udce6 Pedidos del d\\u00eda: ${pedidos.length}\\n\\u2b50 Producto estrella: ${productoEstrella} (${maxCant} unidades)\\n\\u23f0 Hora pico: ${horaPico} (${maxPedidos} pedidos)`;\n\nreturn [{ json: { mensaje } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        -48
+      ],
+      "id": "620fa7c5-1081-43da-ad85-1444331edee2",
+      "name": "Calcular reporte diario1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { chat_id: $env.KITCHEN_CHAT_ID, text: $json.mensaje, parse_mode: \"Markdown\" } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        768,
+        -48
+      ],
+      "id": "25c997fd-2188-4ac9-b2c3-24517bd7d364",
+      "name": "Enviar reporte diario1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Reporte diario (20:00)1": {
+      "main": [
+        [
+          {
+            "node": "Obtener pedidos del dia1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener pedidos del dia1": {
+      "main": [
+        [
+          {
+            "node": "Calcular reporte diario1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular reporte diario1": {
+      "main": [
+        [
+          {
+            "node": "Enviar reporte diario1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "d59464d7-8edc-4a91-8eee-447fd44c34a4",
+  "meta": {
+    "instanceId": "96b8e41cfccc3a575c84215226b10039afa9393379a3c0a15f4a3429ae14ea13"
+  },
+  "nodeGroups": [],
+  "id": "ievRUJv5hrv0JOD4",
+  "tags": []
+}
