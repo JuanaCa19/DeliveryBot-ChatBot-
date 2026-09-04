@@ -28,7 +28,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        800,
+        848,
         1104
       ],
       "id": "6c994f0d-ef30-4126-a63a-b82b9424dba5",
@@ -2864,9 +2864,10 @@
   "active": true,
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate"
+    "binaryMode": "separate",
+    "availableInMCP": false
   },
-  "versionId": "1da1e31d-7ffb-40b4-ac49-96b268f967a2",
+  "versionId": "a40139ee-f306-4827-a3d3-6aed6d539a8e",
   "meta": {
     "instanceId": "96b8e41cfccc3a575c84215226b10039afa9393379a3c0a15f4a3429ae14ea13"
   },
